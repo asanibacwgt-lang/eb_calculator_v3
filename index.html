@@ -1,0 +1,3470 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حاسبة التمويل - EasyBuy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #1a1a5e;
+            --navy-light: #2a2a7a;
+            --navy-dark: #0f0f3d;
+            --burgundy: #a41e22;
+            --burgundy-light: #c42a2e;
+            --burgundy-dark: #7a1518;
+            --gold: #d4af37;
+            --success: #27ae60;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --bg: #f0f2f5;
+            --card-bg: #ffffff;
+            --text: #2c3e50;
+            --text-light: #7f8c8d;
+            --border: #e0e0e0;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --shadow-hover: 0 8px 30px rgba(0,0,0,0.12);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            background: var(--navy);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(26, 26, 94, 0.3);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: white;
+            letter-spacing: -1px;
+        }
+
+        .logo-text span {
+            color: var(--burgundy);
+        }
+
+        .logo-sub {
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.6);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .header-title {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        /* Mode Switcher */
+        .mode-switcher {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+            background: white;
+            padding: 8px;
+            border-radius: 14px;
+            box-shadow: var(--shadow);
+            border: 2px solid var(--border);
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: transparent;
+            color: var(--text-light);
+            text-align: center;
+        }
+
+        .mode-btn:hover {
+            background: #f0f0fa;
+            color: var(--navy);
+        }
+
+        .mode-btn.active {
+            background: linear-gradient(135deg, var(--navy), var(--navy-light));
+            color: white;
+            border-color: var(--navy);
+            box-shadow: 0 4px 15px rgba(26, 26, 94, 0.3);
+        }
+
+        /* Main Layout */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 25px;
+            margin-bottom: 12px;
+            align-items: start;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-top: 4px solid var(--navy);
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title .icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--navy), var(--navy-light));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--navy);
+            font-size: 0.9rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: 'Tajawal', sans-serif;
+            transition: all 0.3s;
+            background: #fafbfc;
+            color: var(--text);
+        }
+
+        input[type=number]::-webkit-outer-spin-button,
+        input[type=number]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+            appearance: textfield;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--navy);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(26, 26, 94, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: #bdc3c7;
+        }
+
+        .input-suffix {
+            position: relative;
+        }
+
+        .input-suffix .form-input {
+            padding-left: 50px;
+        }
+
+        .input-suffix .suffix {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--burgundy);
+            font-weight: 700;
+            pointer-events: none;
+            font-size: 0.85rem;
+        }
+
+        /* Product List */
+        .product-list {
+            margin-bottom: 15px;
+        }
+
+        .product-item {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+            align-items: center;
+            direction: rtl;
+        }
+
+        .product-item input[type="text"] {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .product-item .product-price-wrapper {
+            width: 120px;
+            flex-shrink: 0;
+        }
+
+        .product-item .btn-remove-product {
+            flex-shrink: 0;
+        }
+
+        .product-item input[type="text"] {
+            padding: 10px 12px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 0.9rem;
+            background: #fafbfc;
+            transition: all 0.3s;
+        }
+
+        .product-item input[type="text"]:focus {
+            outline: none;
+            border-color: var(--navy);
+            background: white;
+        }
+
+        .product-item .product-price-input {
+            padding: 10px 12px;
+            padding-left: 40px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 0.9rem;
+            background: #fafbfc;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .product-item .product-price-input:focus {
+            outline: none;
+            border-color: var(--navy);
+            background: white;
+        }
+
+        .product-price-wrapper {
+            position: relative;
+        }
+
+        .product-price-wrapper .price-suffix {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--burgundy);
+            font-weight: 700;
+            font-size: 0.75rem;
+            pointer-events: none;
+        }
+
+        .btn-remove-product {
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(164, 30, 34, 0.1);
+            color: var(--burgundy);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-remove-product:hover {
+            background: var(--burgundy);
+            color: white;
+        }
+
+        .btn-add-product {
+            width: 100%;
+            padding: 10px;
+            border: 2px dashed var(--border);
+            border-radius: 10px;
+            background: #fafbfc;
+            color: var(--navy);
+            font-family: 'Tajawal', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-bottom: 15px;
+        }
+
+        .btn-add-product:hover {
+            border-color: var(--navy);
+            background: #f0f0fa;
+        }
+
+        .products-total {
+            background: linear-gradient(135deg, var(--navy), var(--navy-light));
+            color: white;
+            padding: 15px 20px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .products-total-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .products-total-value {
+            font-size: 1.4rem;
+            font-weight: 800;
+        }
+
+        .products-total-value span {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            margin-right: 4px;
+        }
+
+        .btn-use-total {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid var(--navy);
+            border-radius: 10px;
+            background: white;
+            color: var(--navy);
+            font-family: 'Tajawal', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 15px;
+        }
+
+        .btn-use-total:hover {
+            background: var(--navy);
+            color: white;
+        }
+
+        /* Radio Group */
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #fafbfc;
+        }
+
+        .radio-option:hover {
+            border-color: var(--navy-light);
+            background: #f0f0fa;
+        }
+
+        .radio-option.active {
+            border-color: var(--navy);
+            background: linear-gradient(135deg, rgba(26,26,94,0.08), rgba(42,42,122,0.05));
+        }
+
+        .radio-option input {
+            display: none;
+        }
+
+        .radio-circle {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            margin-left: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+
+        .radio-option.active .radio-circle {
+            border-color: var(--navy);
+            background: var(--navy);
+        }
+
+        .radio-circle::after {
+            content: '';
+            width: 7px;
+            height: 7px;
+            background: white;
+            border-radius: 50%;
+            transform: scale(0);
+            transition: transform 0.2s;
+        }
+
+        .radio-option.active .radio-circle::after {
+            transform: scale(1);
+        }
+
+        .radio-text {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--navy);
+        }
+
+        .radio-sub {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin-top: 2px;
+        }
+
+        /* Buttons */
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: 'Tajawal', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--burgundy), var(--burgundy-light));
+            color: white;
+            box-shadow: 0 4px 15px rgba(164, 30, 34, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(164, 30, 34, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--border);
+            color: var(--text);
+            margin-top: 8px;
+        }
+
+        .btn-secondary:hover {
+            background: #d5dbde;
+        }
+
+        /* Section Divider */
+        .section-divider {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 20px 0;
+            color: var(--text-light);
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .section-divider::before,
+        .section-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        /* Results Section */
+        .results-section {
+            display: none;
+        }
+
+        .results-section.show {
+            display: block;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Summary Cards */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 12px;
+        }
+
+        .summary-card {
+            background: linear-gradient(135deg, var(--navy), var(--navy-light));
+            color: white;
+            padding: 20px;
+            border-radius: 14px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .summary-card::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -20%;
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 50%;
+        }
+
+        .summary-card.warning {
+            background: linear-gradient(135deg, #d68910, var(--warning));
+        }
+
+        .summary-label {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            margin-bottom: 6px;
+        }
+
+        .summary-value {
+            font-size: 1.6rem;
+            font-weight: 800;
+        }
+
+        .summary-sub {
+            font-size: 0.75rem;
+            opacity: 0.8;
+            margin-top: 4px;
+        }
+
+        /* Eligibility Banner */
+        .eligibility-banner {
+            padding: 18px 25px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .eligibility-banner.eligible {
+            background: linear-gradient(135deg, rgba(39,174,96,0.12), rgba(39,174,96,0.04));
+            border: 2px solid var(--success);
+            color: var(--success);
+        }
+
+        .eligibility-banner.not-eligible {
+            background: linear-gradient(135deg, rgba(231,76,60,0.12), rgba(231,76,60,0.04));
+            border: 2px solid var(--danger);
+            color: var(--danger);
+        }
+
+        .eligibility-banner .icon {
+            font-size: 1.8rem;
+        }
+
+        /* Customer Info */
+        .customer-info {
+            background: linear-gradient(135deg, #f8f8fc, #f0f0f8);
+            border: 2px solid var(--navy);
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 12px;
+        }
+
+        .customer-info-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 12px;
+            background: white;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+
+        .info-label {
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        .info-value {
+            font-weight: 700;
+            color: var(--navy);
+            font-size: 0.9rem;
+        }
+
+        /* Table */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 14px;
+            box-shadow: var(--shadow);
+            margin-bottom: 12px;
+            border: 1px solid var(--border);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        thead {
+            background: linear-gradient(135deg, var(--navy-dark), var(--navy));
+            color: white;
+        }
+
+        th {
+            padding: 15px 12px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        td {
+            padding: 14px 12px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        tbody tr {
+            transition: all 0.3s;
+        }
+
+        tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        tbody tr.eligible-row {
+            background: linear-gradient(90deg, rgba(39,174,96,0.06), transparent);
+        }
+
+        tbody tr.eligible-row:hover {
+            background: linear-gradient(90deg, rgba(39,174,96,0.12), transparent);
+        }
+
+        tbody tr.not-eligible-row {
+            background: linear-gradient(90deg, rgba(164,30,34,0.04), transparent);
+            opacity: 0.7;
+        }
+
+        .rate-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            background: var(--burgundy);
+            color: white;
+        }
+
+        .emi-value {
+            font-weight: 700;
+            color: var(--navy);
+            font-size: 1rem;
+        }
+
+        .first-emi-value {
+            font-weight: 800;
+            color: var(--burgundy);
+            font-size: 1.05rem;
+        }
+
+        .total-value {
+            font-weight: 800;
+            color: var(--navy-dark);
+            font-size: 1rem;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .status-badge.approved {
+            background: rgba(39,174,96,0.12);
+            color: var(--success);
+            border: 1px solid rgba(39,174,96,0.3);
+        }
+
+        .status-badge.rejected {
+            background: rgba(164,30,34,0.08);
+            color: var(--burgundy);
+            border: 1px solid rgba(164,30,34,0.2);
+        }
+
+        /* Print Button */
+        .print-section {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .btn-print {
+            background: linear-gradient(135deg, var(--navy), var(--navy-light));
+            color: white;
+            padding: 12px 35px;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            font-family: 'Tajawal', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(26, 26, 94, 0.3);
+        }
+
+        .btn-print:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(26, 26, 94, 0.4);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--navy);
+            color: white;
+            padding: 20px 30px;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-size: 1.4rem;
+            font-weight: 900;
+        }
+
+        .footer-logo span {
+            color: var(--burgundy);
+        }
+
+        .footer-text {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.85rem;
+        }
+
+        .footer-contact {
+            display: flex;
+            gap: 20px;
+            color: rgba(255,255,255,0.8);
+            font-size: 0.85rem;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--navy-light);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--navy);
+        }
+
+        /* Hidden sections */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Quick calc notice */
+        .quick-notice {
+            background: linear-gradient(135deg, rgba(212,175,55,0.1), rgba(212,175,55,0.05));
+            border: 2px solid var(--gold);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            text-align: center;
+            color: var(--navy);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .quick-notice .icon {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        
+        /* ========== SCHEDULE MODE STYLES ========== */
+        .schedule-page {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            border-top: 4px solid var(--navy);
+            padding: 0px 120px;
+        }
+
+        .schedule-letterhead {
+            position: relative;
+            height: 110px;
+            overflow: hidden;
+            background: white;
+        }
+
+        .schedule-letterhead::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 130px;
+            height: 85px;
+            background: linear-gradient(135deg, var(--navy) 50%, var(--burgundy) 50%);
+            clip-path: polygon(0 0, 100% 0, 0 100%);
+        }
+
+        .schedule-letterhead::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 160px;
+            height: 100px;
+            background: linear-gradient(315deg, var(--navy) 50%, var(--burgundy) 50%);
+            clip-path: polygon(100% 0, 100% 100%, 0 100%);
+        }
+
+        .schedule-letterhead-content {
+            position: absolute;
+            bottom: 15px;
+            left: 20px;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .schedule-logo-text {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .schedule-logo-text .easy { color: var(--burgundy); }
+        .schedule-logo-text .buy { color: var(--navy); }
+
+        .schedule-logo-divider {
+            width: 2px;
+            height: 50px;
+            background: #cbd5e1;
+        }
+
+        .schedule-logo-info {
+            text-align: left;
+            direction: ltr;
+        }
+
+        .schedule-logo-info .en {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--navy);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .schedule-logo-info .ar {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--navy);
+            margin: 3px 0;
+        }
+
+        .schedule-logo-info .web {
+            font-size: 12px;
+            color: var(--burgundy);
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .schedule-content {
+            padding: 15px 20px 20px;
+        }
+
+        .schedule-page-title {
+            text-align: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--burgundy);
+        }
+
+        .schedule-page-title h2 {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--navy);
+        }
+
+        .schedule-page-title .subtitle {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-top: 5px;
+        }
+
+        .schedule-summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .schedule-summary-card {
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .schedule-summary-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+
+        .schedule-summary-card.total {
+            background: linear-gradient(135deg, var(--navy), var(--navy-light));
+        }
+
+        .schedule-summary-card.paid {
+            background: linear-gradient(135deg, #059669, #10b981);
+        }
+
+        .schedule-summary-card.unpaid {
+            background: linear-gradient(135deg, var(--burgundy), #ef4444);
+        }
+
+        .schedule-summary-card h3 {
+            font-size: 13px;
+            font-weight: 500;
+            opacity: 0.9;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .schedule-summary-card .value {
+            font-size: 22px;
+            font-weight: 800;
+            position: relative;
+            z-index: 1;
+            font-family: 'Courier New', monospace;
+        }
+
+        .schedule-summary-card .detail {
+            font-size: 12px;
+            margin-top: 8px;
+            opacity: 0.85;
+            position: relative;
+            z-index: 1;
+        }
+
+        .schedule-info-bar {
+            display: flex;
+            justify-content: space-between;
+            background: linear-gradient(90deg, #f1f5f9, #e2e8f0);
+            padding: 14px 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 13px;
+            border-right: 4px solid var(--burgundy);
+        }
+
+        .schedule-info-bar div {
+            text-align: center;
+        }
+
+        .schedule-info-bar span {
+            display: block;
+            font-weight: 800;
+            color: var(--navy);
+            font-size: 15px;
+            margin-top: 3px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .schedule-table-container {
+            overflow-x: auto;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .schedule-table thead {
+            background: var(--navy);
+            color: white;
+        }
+
+        .schedule-table th {
+            padding: 14px 10px;
+            font-weight: 700;
+            text-align: center;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .schedule-table td {
+            padding: 12px 10px;
+            text-align: center;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .schedule-table tbody tr:hover {
+            background: #fef2f2;
+        }
+
+        .schedule-table tbody tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        .schedule-table tbody tr:nth-child(even):hover {
+            background: #fef2f2;
+        }
+
+        .schedule-amount {
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+            color: var(--navy);
+        }
+
+        .schedule-date {
+            direction: ltr;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: #475569;
+        }
+
+        .schedule-footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e2e8f0;
+            text-align: center;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .schedule-footer .report-date {
+            color: var(--burgundy);
+            font-weight: 700;
+        }
+
+        .schedule-upload-section {
+            text-align: center;
+            padding: 50px 30px;
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            margin: 30px;
+            background: #f8fafc;
+            transition: all 0.3s;
+        }
+
+        .schedule-upload-section:hover {
+            border-color: var(--burgundy);
+            background: #fef2f2;
+        }
+
+        .schedule-upload-section input[type="file"] {
+            display: none;
+        }
+
+        .schedule-upload-btn {
+            display: inline-block;
+            padding: 14px 40px;
+            background: var(--burgundy);
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 16px;
+            transition: all 0.3s;
+            border: none;
+        }
+
+        .schedule-upload-btn:hover {
+            background: var(--burgundy-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(164, 30, 34, 0.3);
+        }
+
+        .schedule-upload-section p {
+            margin-top: 15px;
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        @media (max-width: 900px) {
+            .schedule-summary-grid {
+                grid-template-columns: 1fr;
+            }
+            .schedule-info-bar {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+        }
+
+        /* ========== COMPLIANCE ANALYSIS STYLES ========== */
+        .compliance-section {
+            margin-bottom: 15px;
+        }
+
+        .compliance-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, var(--navy), var(--navy-light));
+            border-radius: 12px;
+            color: white;
+        }
+
+        .compliance-header .icon {
+            font-size: 2rem;
+        }
+
+        .compliance-header h3 {
+            font-size: 1.1rem;
+            font-weight: 800;
+        }
+
+        .compliance-header .sub {
+            font-size: 0.8rem;
+            opacity: 0.85;
+        }
+
+        /* Score Circle */
+        .score-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            
+        }
+
+        .score-circle-wrapper {
+            position: relative;
+            width: 140px;
+            height: 140px;
+        }
+
+        .score-circle {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: conic-gradient(var(--score-color) var(--score-deg), #e2e8f0 0deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .score-circle::before {
+            content: '';
+            position: absolute;
+            width: 110px;
+            height: 110px;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .score-value {
+            position: relative;
+            z-index: 1;
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--score-color);
+            font-family: 'Courier New', monospace;
+        }
+
+        .score-label {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-light);
+            white-space: nowrap;
+        }
+
+        /* Classification Badge */
+        .classification-badge {
+            padding: 12px 30px;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            text-align: center;
+            color: white;
+            min-width: 200px;
+        }
+
+        .classification-badge.compliant {
+            background: linear-gradient(135deg, #059669, #10b981);
+        }
+
+        .classification-badge.slight-delay {
+            background: linear-gradient(135deg, #d68910, #f39c12);
+        }
+
+        .classification-badge.moderate-delay {
+            background: linear-gradient(135deg, #e67e22, #f39c12);
+        }
+
+        .classification-badge.non-compliant {
+            background: linear-gradient(135deg, var(--burgundy), #ef4444);
+        }
+
+        .classification-badge .badge-sub {
+            font-size: 0.8rem;
+            font-weight: 500;
+            opacity: 0.9;
+            margin-top: 4px;
+        }
+
+        /* Recommendation Box */
+        .recommendation-box {
+            padding: 18px 25px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 700;
+            font-size: 1rem;
+            border: 2px solid;
+        }
+
+        .recommendation-box.approve {
+            background: linear-gradient(135deg, rgba(39,174,96,0.12), rgba(39,174,96,0.04));
+            border-color: var(--success);
+            color: var(--success);
+        }
+
+        .recommendation-box.advance-required {
+            background: linear-gradient(135deg, rgba(211,137,16,0.12), rgba(211,137,16,0.04));
+            border-color: var(--warning);
+            color: #b7791f;
+        }
+
+        .recommendation-box.reject {
+            background: linear-gradient(135deg, rgba(164,30,34,0.12), rgba(164,30,34,0.04));
+            border-color: var(--burgundy);
+            color: var(--burgundy);
+        }
+
+        .recommendation-box .rec-icon {
+            font-size: 2rem;
+        }
+
+        .recommendation-box .rec-text {
+            flex: 1;
+        }
+
+        .recommendation-box .rec-reason {
+            font-size: 0.85rem;
+            font-weight: 500;
+            opacity: 0.85;
+            margin-top: 4px;
+        }
+
+        /* Delay Stats Grid */
+        .delay-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .delay-stat-card {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .delay-stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .delay-stat-card .stat-icon {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .delay-stat-card .stat-value {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--navy);
+            font-family: 'Courier New', monospace;
+        }
+
+        .delay-stat-card .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+
+        /* Delay Analysis Table */
+        .delay-table-container {
+            overflow-x: auto;
+            margin-bottom: 12px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .delay-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        .delay-table thead {
+            background: var(--navy-dark);
+            color: white;
+        }
+
+        .delay-table th {
+            padding: 10px 8px;
+            font-weight: 700;
+            text-align: center;
+            font-size: 11px;
+        }
+
+        .delay-table td {
+            padding: 10px 8px;
+            text-align: center;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .delay-table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .delay-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .delay-badge.on-time {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .delay-badge.slight {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .delay-badge.moderate {
+            background: #fed7aa;
+            color: #9a3412;
+        }
+
+        .delay-badge.severe {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .delay-months {
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+        }
+
+        .delay-months.on-time { color: var(--success); }
+        .delay-months.slight { color: var(--warning); }
+        .delay-months.moderate { color: #e67e22; }
+        .delay-months.severe { color: var(--burgundy); }
+
+        /* Pattern Analysis */
+        .pattern-box {
+            background: linear-gradient(135deg, #f8f8fc, #f0f0f8);
+            border: 2px solid var(--navy);
+            border-radius: 12px;
+            padding: 18px 20px;
+            margin-bottom: 12px;
+        }
+
+        .pattern-box h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pattern-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px dashed var(--border);
+        }
+
+        .pattern-item:last-child {
+            border-bottom: none;
+        }
+
+        .pattern-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .pattern-dot.green { background: var(--success); }
+        .pattern-dot.yellow { background: var(--warning); }
+        .pattern-dot.orange { background: #e67e22; }
+        .pattern-dot.red { background: var(--burgundy); }
+
+        .pattern-text {
+            font-size: 0.9rem;
+            color: var(--text);
+        }
+
+        .pattern-text strong {
+            color: var(--navy);
+        }
+
+        @media (max-width: 900px) {
+            .delay-stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .score-container {
+                flex-direction: column;
+            }
+        }
+/* ===== PRINT STYLES - Optimized for A4 ===== */
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 10mm;
+            }
+
+            body {
+                background: white !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            .header, .hero, .btn-print, .footer, .btn-primary, .btn-secondary,
+            .mode-switcher, .btn-add-product, .btn-remove-product, .btn-use-total {
+                display: none !important;
+            }
+
+            .container {
+                max-width: 100% !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+
+            .main-grid {
+                display: block !important;
+                grid-template-columns: none !important;
+            }
+
+            .card {
+                display: none !important;
+            }
+
+            .results-section {
+                display: block !important;
+                animation: none !important;
+                page-break-inside: avoid;
+            }
+
+            .summary-grid {
+                grid-template-columns: repeat(3, 1fr) !important;
+                gap: 10px !important;
+                margin-bottom: 15px !important;
+            }
+
+            .summary-card {
+                padding: 12px !important;
+                border-radius: 8px !important;
+                box-shadow: none !important;
+                border: 2px solid var(--navy) !important;
+                background: white !important;
+                color: var(--navy) !important;
+                page-break-inside: avoid;
+            }
+
+            .summary-card.warning {
+                border: 2px solid var(--warning) !important;
+                color: var(--warning) !important;
+                background: white !important;
+            }
+
+            .summary-label {
+                font-size: 0.75rem !important;
+                color: var(--text-light) !important;
+            }
+
+            .summary-value {
+                font-size: 1.3rem !important;
+                color: var(--navy) !important;
+            }
+
+            .eligibility-banner {
+                padding: 12px 15px !important;
+                margin-bottom: 15px !important;
+                font-size: 0.9rem !important;
+            }
+
+            .customer-info {
+                padding: 15px !important;
+                margin-bottom: 15px !important;
+                border: 2px solid var(--navy) !important;
+                background: white !important;
+            }
+
+            .customer-info-title {
+                font-size: 1rem !important;
+                margin-bottom: 10px !important;
+            }
+
+            .info-grid {
+                grid-template-columns: repeat(3, 1fr) !important;
+                gap: 8px !important;
+            }
+
+            .info-item {
+                padding: 8px !important;
+            }
+
+            .table-container {
+                box-shadow: none !important;
+                border: 2px solid var(--navy) !important;
+                margin-bottom: 15px !important;
+            }
+
+            table {
+                font-size: 0.85rem !important;
+            }
+
+            th {
+                padding: 10px 8px !important;
+                font-size: 0.8rem !important;
+                background: var(--navy) !important;
+                color: white !important;
+            }
+
+            td {
+                padding: 10px 8px !important;
+                font-size: 0.85rem !important;
+            }
+
+            .rate-badge {
+                font-size: 0.75rem !important;
+                padding: 3px 8px !important;
+            }
+
+            .emi-value, .first-emi-value, .total-value {
+                font-size: 0.9rem !important;
+            }
+
+            .status-badge {
+                font-size: 0.75rem !important;
+                padding: 4px 8px !important;
+            }
+
+            tbody tr.eligible-row {
+                background: rgba(39,174,96,0.1) !important;
+            }
+
+            tbody tr.not-eligible-row {
+                background: rgba(164,30,34,0.05) !important;
+                opacity: 1 !important;
+            }
+
+            
+            /* Schedule print styles */
+            .schedule-page {
+                box-shadow: none !important;
+                border: none !important;
+            }
+
+            .schedule-letterhead::before,
+            .schedule-letterhead::after {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            .schedule-summary-card {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                box-shadow: none !important;
+                border: 2px solid var(--navy) !important;
+            }
+
+            .schedule-summary-card.paid {
+                border: 2px solid var(--success) !important;
+            }
+
+            .schedule-summary-card.unpaid {
+                border: 2px solid var(--burgundy) !important;
+            }
+/* Print header */
+            .print-header {
+                display: block !important;
+                text-align: center;
+                margin-bottom: 12px;
+                padding-bottom: 15px;
+                border-bottom: 3px solid var(--navy);
+            }
+
+            .print-logo {
+                font-size: 1.5rem;
+                font-weight: 900;
+                color: var(--navy);
+            }
+
+            .print-logo span {
+                color: var(--burgundy);
+            }
+
+            .print-date {
+                font-size: 0.85rem;
+                color: var(--text-light);
+                margin-top: 5px;
+            }
+        }
+
+        /* Hide print header on screen */
+        .print-header {
+            display: none;
+        }
+
+        /* ===== PRINT SCHEDULE ONLY MODE ===== */
+        @media print {
+            body.print-schedule-only * {
+                visibility: hidden;
+            }
+            body.print-schedule-only .schedule-table-container,
+            body.print-schedule-only .schedule-table-container * {
+                visibility: visible;
+            }
+            body.print-schedule-only .schedule-table-container {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                box-shadow: none;
+                border: 1px solid #1a1a5e;
+            }
+            body.print-schedule-only .schedule-table {
+                font-size: 8pt;
+            }
+            body.print-schedule-only .schedule-table th {
+                padding: 4px 2px;
+                font-size: 7pt;
+            }
+            body.print-schedule-only .schedule-table td {
+                padding: 3px 2px;
+                font-size: 7.5pt;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Print Header (visible only when printing) -->
+    <div class="print-header">
+        <div class="print-logo">EASY<span>Buy</span></div>
+        <div class="print-date">تقرير حاسبة التمويل - <span id="printDate"></span></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <div>
+                <div class="logo-text">EASY<span>Buy</span></div>
+                <div class="logo-sub">Installments Services</div>
+            </div>
+        </div>
+        <div class="header-title">🖥️ نظام حاسبة التمويل الداخلي</div>
+    </header>
+
+    <div class="container">
+        <!-- Mode Switcher -->
+        <div class="mode-switcher">
+            <button class="mode-btn active" onclick="switchMode('full')" id="btnModeFull">
+                📋 حساب كامل (بالراتب)
+            </button>
+            <button class="mode-btn" onclick="switchMode('quick')" id="btnModeQuick">
+                ⚡ حساب سريع (القسط فقط)
+            </button>
+            <button class="mode-btn" onclick="switchMode('schedule')" id="btnModeSchedule">
+                📄 جدول أقساط العميل
+            </button>
+            <button class="mode-btn" onclick="switchMode('products')" id="btnModeProducts">
+                🛒 حساب بالمنتجات
+            </button>
+        </div>
+
+        <div class="main-grid">
+            <!-- Input Form -->
+            <div class="card">
+                <!-- FULL MODE -->
+                <div id="fullModeSection">
+                    <div class="card-title">
+                        <div class="icon">📝</div>
+                        بيانات العميل
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">💵 مبلغ التمويل المطلوب</label>
+                        <div class="input-suffix">
+                            <input type="number" class="form-input" id="loanAmount" placeholder="أدخل المبلغ" min="1">
+                            <span class="suffix">KWD</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">💰 الراتب الشهري</label>
+                        <div class="input-suffix">
+                            <input type="number" class="form-input" id="salary" placeholder="أدخل الراتب" min="1">
+                            <span class="suffix">KWD</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">📋 مجموع الأقساط الحالية</label>
+                        <div class="input-suffix">
+                            <input type="number" class="form-input" id="currentInstallments" placeholder="أدخل مجموع الأقساط" min="0">
+                            <span class="suffix">KWD</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">🏢 نوع العميل</label>
+                        <div class="radio-group">
+                            <label class="radio-option active" onclick="selectType(this, 'government')">
+                                <input type="radio" name="clientType" value="government" checked>
+                                <div class="radio-circle"></div>
+                                <div>
+                                    <div class="radio-text">موظف حكومي</div>
+                                    <div class="radio-sub">نسبة الاستقطاع: 48%</div>
+                                </div>
+                            </label>
+                            <label class="radio-option" onclick="selectType(this, 'private')">
+                                <input type="radio" name="clientType" value="private">
+                                <div class="radio-circle"></div>
+                                <div>
+                                    <div class="radio-text">قطاع خاص</div>
+                                    <div class="radio-sub">نسبة الاستقطاع: 40%</div>
+                                </div>
+                            </label>
+                            <label class="radio-option" onclick="selectType(this, 'retired')">
+                                <input type="radio" name="clientType" value="retired">
+                                <div class="radio-circle"></div>
+                                <div>
+                                    <div class="radio-text"> متقاعد </div>
+                                    <div class="radio-sub">نسبة الاستقطاع: 30%</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" onclick="calculateFull()">
+                        🔍 احسب النتائج
+                    </button>
+                </div>
+
+                <!-- QUICK MODE -->
+                <div id="quickModeSection" class="hidden">
+                    <div class="card-title">
+                        <div class="icon">⚡</div>
+                        حساب سريع
+                    </div>
+
+                    <div class="quick-notice">
+                        <span class="icon">💡</span>
+                        أدخل مبلغ التمويل فقط وسيتم حساب الأقساط لجميع المدد
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">💵 مبلغ التمويل المطلوب</label>
+                        <div class="input-suffix">
+                            <input type="number" class="form-input" id="quickLoanAmount" placeholder="أدخل المبلغ" min="1">
+                            <span class="suffix">KWD</span>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" onclick="calculateQuick()">
+                        ⚡ احسب الأقساط
+                    </button>
+                </div>
+
+                <!-- PRODUCTS MODE -->
+                <div id="productsModeSection">
+    <div class="card-title">
+        <div class="icon">🛒</div>
+        قائمة أجهزة iPhone
+    </div>
+
+    <!-- اختيار الجهاز -->
+    <div class="iphone-selector">
+        <div class="form-group">
+            <label class="form-label">📱 اختر السعة</label>
+            <select class="form-input" id="iphoneStorage" onchange="updateIphonePrice()">
+                <option value="">-- اختر السعة --</option>
+                <option value="256">256 GB</option>
+                <option value="512">512 GB</option>
+                <option value="1TB">1 TB</option>
+                <option value="2TB">2 TB</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">🎨 اختر اللون</label>
+            <select class="form-input" id="iphoneColor" onchange="updateIphonePrice()">
+                <option value="">-- اختر اللون --</option>
+                <option value="SILVER">Silver (فضي)</option>
+                <option value="ORANGE">Orange (برتقالي)</option>
+                <option value="BLUE">Blue (أزرق)</option>
+            </select>
+        </div>
+
+        <div class="price-display" id="iphonePriceDisplay" style="display:none;">
+            <div class="price-tag">
+                <span class="price-label">السعر:</span>
+                <span class="price-value" id="currentIphonePrice">0</span>
+                <span class="price-currency">KWD</span>
+            </div>
+        </div>
+
+        <button class="btn btn-add-cart" id="addToCartBtn" onclick="addToCart()" disabled>
+            ➕ أضف إلى السلة
+        </button>
+    </div>
+
+    <!-- السلة -->
+    <div class="cart-section" id="cartSection" style="display:none;">
+        <div class="cart-title">🛍️ الأجهزة المختارة</div>
+        <div class="cart-list" id="cartList">
+            <!-- الأجهزة تضاف هنا -->
+        </div>
+    </div>
+
+    <!-- المجموع الكلي -->
+    <div class="products-total" id="cartTotalSection" style="display:none;">
+        <span class="products-total-label">💰 المجموع الكلي</span>
+        <span class="products-total-value" id="cartTotalAmount">0.000 <span>KWD</span></span>
+    </div>
+
+    <button class="btn-use-total" id="useCartTotalBtn" onclick="useCartTotalAsLoan()" style="display:none;">
+        ✅ استخدم المجموع كمبلغ تمويل
+    </button>
+
+    <div class="section-divider">أو أدخل مبلغ التمويل مباشرة</div>
+
+    <div class="form-group">
+        <label class="form-label">💵 مبلغ التمويل</label>
+        <div class="input-suffix">
+            <input type="number" class="form-input" id="productsLoanAmount" placeholder="أدخل المبلغ" min="1">
+            <span class="suffix">KWD</span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">💰 الراتب الشهري</label>
+        <div class="input-suffix">
+            <input type="number" class="form-input" id="productsSalary" placeholder="أدخل الراتب" min="1">
+            <span class="suffix">KWD</span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">📋 مجموع الأقساط الحالية</label>
+        <div class="input-suffix">
+            <input type="number" class="form-input" id="productsCurrentInstallments" placeholder="أدخل مجموع الأقساط" min="0">
+            <span class="suffix">KWD</span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">🏢 نوع العميل</label>
+        <div class="radio-group">
+            <label class="radio-option active" onclick="selectTypeProducts(this, 'government')">
+                <input type="radio" name="clientTypeProducts" value="government" checked>
+                <div class="radio-circle"></div>
+                <div>
+                    <div class="radio-text">موظف حكومي</div>
+                    <div class="radio-sub">نسبة الاستقطاع: 48%</div>
+                </div>
+            </label>
+            <label class="radio-option" onclick="selectTypeProducts(this, 'private')">
+                <input type="radio" name="clientTypeProducts" value="private">
+                <div class="radio-circle"></div>
+                <div>
+                    <div class="radio-text">قطاع خاص</div>
+                    <div class="radio-sub">نسبة الاستقطاع: 40%</div>
+                </div>
+            </label>
+            <label class="radio-option" onclick="selectTypeProducts(this, 'retired')">
+                <input type="radio" name="clientTypeProducts" value="retired">
+                <div class="radio-circle"></div>
+                <div>
+                    <div class="radio-text">متقاعد</div>
+                    <div class="radio-sub">نسبة الاستقطاع: 30%</div>
+                </div>
+            </label>
+        </div>
+    </div>
+
+    <button class="btn btn-primary" onclick="calculateProducts()">
+        🔍 احسب النتائج
+    </button>
+</div>
+
+<style>
+/* أنماط جديدة لقسم iPhone */
+.iphone-selector {
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.iphone-selector .form-group {
+    margin-bottom: 15px;
+}
+
+.iphone-selector .form-label {
+    color: #1d1d64;
+    font-size: 14px;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.iphone-selector select.form-input {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    background: rgb(32 32 105);
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.iphone-selector select.form-input:focus {
+    border-color: #f39c12;
+    outline: none;
+}
+
+.iphone-selector select.form-input option {
+    background: #1a1a2e;
+    color: #fff;
+}
+
+.price-display {
+    text-align: center;
+    margin: 20px 0;
+    padding: 15px;
+    background: #1a1a5e;
+    border-radius: 10px;
+    border: 1px solid rgba(243, 156, 18, 0.3);
+}
+
+.price-tag {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.price-label {
+    color: #aaa;
+    font-size: 16px;
+}
+
+.price-value {
+    color: #ffffff;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.price-currency {
+    color: #f39c12;
+    font-size: 18px;
+}
+
+.btn-add-cart {
+    width: 100%;
+    padding: 14px;
+    background: #ac2125;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-add-cart:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(243, 156, 18, 0.4);
+}
+
+.btn-add-cart:disabled {
+    background: #aa2125;
+    cursor: not-allowed;
+}
+
+/* سلة المشتريات */
+.cart-section {
+    margin: 20px 0;
+    background: #1a1a5e;
+    border-radius: 15px;
+    padding: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cart-title {
+    color: rgb(255 255 255);
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-align: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 15px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    border-right: 3px solid #f39c12;
+    transition: all 0.3s ease;
+}
+
+.cart-item:hover {
+    background: rgba(255,255,255,0.08);
+}
+
+.cart-item-info {
+    flex: 1;
+}
+
+.cart-item-name {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 3px;
+}
+
+.cart-item-details {
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.cart-item-price {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0 15px;
+}
+
+.btn-remove-cart {
+    background: rgba(231, 76, 60, 0.2);
+    color: #e74c3c;
+    border: 1px solid rgba(231, 76, 60, 0.3);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.btn-remove-cart:hover {
+    background: rgba(231, 76, 60, 0.4);
+    transform: scale(1.1);
+}
+
+.empty-cart {
+    text-align: center;
+    color: #888;
+    padding: 20px;
+    font-size: 14px;
+}
+
+/* تحديث المجموع */
+#cartTotalSection {
+    background: linear-gradient(135deg, #1a1a2e, #0f3460);
+    border: 2px solid #f39c12;
+}
+
+#cartTotalAmount {
+    color: #f39c12;
+    font-size: 24px;
+}
+
+#useCartTotalBtn {
+    margin-top: 10px;
+}
+</style>
+
+<script>
+// بيانات أسعار iPhone
+const iphonePrices = {
+    "256": {
+        "SILVER": 465,
+        "ORANGE": 455,
+        "BLUE": 450
+    },
+    "512": {
+        "SILVER": 520,
+        "ORANGE": 500,
+        "BLUE": 495
+    },
+    "1TB": {
+        "SILVER": 580,
+        "ORANGE": 570,
+        "BLUE": 580
+    },
+    "2TB": {
+        "SILVER": 650,
+        "ORANGE": 650,
+        "BLUE": 650
+    }
+};
+
+let cart = [];
+let cartItemId = 0;
+
+// تحديث السعر عند تغيير الاختيار
+function updateIphonePrice() {
+    const storage = document.getElementById('iphoneStorage').value;
+    const color = document.getElementById('iphoneColor').value;
+    const priceDisplay = document.getElementById('iphonePriceDisplay');
+    const priceValue = document.getElementById('currentIphonePrice');
+    const addBtn = document.getElementById('addToCartBtn');
+
+    if (storage && color && iphonePrices[storage] && iphonePrices[storage][color]) {
+        const price = iphonePrices[storage][color];
+        priceValue.textContent = price.toFixed(3);
+        priceDisplay.style.display = 'block';
+        addBtn.disabled = false;
+    } else {
+        priceDisplay.style.display = 'none';
+        addBtn.disabled = true;
+    }
+}
+
+// إضافة جهاز للسلة
+function addToCart() {
+    const storage = document.getElementById('iphoneStorage').value;
+    const color = document.getElementById('iphoneColor').value;
+
+    if (!storage || !color) return;
+
+    const price = iphonePrices[storage][color];
+    const storageLabel = storage === "1TB" ? "1 TB" : storage === "2TB" ? "2 TB" : storage + " GB";
+    const colorLabel = color === "SILVER" ? "فضي" : color === "ORANGE" ? "برتقالي" : "أزرق";
+
+    cartItemId++;
+    const item = {
+        id: cartItemId,
+        name: "iPhone 17 Pro Max",
+        storage: storageLabel,
+        color: colorLabel,
+        colorCode: color,
+        price: price
+    };
+
+    cart.push(item);
+    renderCart();
+
+    // إعادة تعيين الاختيار
+    document.getElementById('iphoneStorage').value = "";
+    document.getElementById('iphoneColor').value = "";
+    document.getElementById('iphonePriceDisplay').style.display = 'none';
+    document.getElementById('addToCartBtn').disabled = true;
+}
+
+// عرض السلة
+function renderCart() {
+    const cartList = document.getElementById('cartList');
+    const cartSection = document.getElementById('cartSection');
+    const cartTotalSection = document.getElementById('cartTotalSection');
+    const useCartTotalBtn = document.getElementById('useCartTotalBtn');
+
+    if (cart.length === 0) {
+        cartSection.style.display = 'none';
+        cartTotalSection.style.display = 'none';
+        useCartTotalBtn.style.display = 'none';
+        return;
+    }
+
+    cartSection.style.display = 'block';
+    cartTotalSection.style.display = 'flex';
+    useCartTotalBtn.style.display = 'block';
+
+    let html = '';
+    let total = 0;
+
+    cart.forEach(item => {
+        total += item.price;
+        html += `
+            <div class="cart-item" id="cart-item-${item.id}">
+                <div class="cart-item-info">
+                    <div class="cart-item-name">${item.name}</div>
+                    <div class="cart-item-details">${item.storage} - ${item.color}</div>
+                </div>
+                <div class="cart-item-price">${item.price.toFixed(3)} KWD</div>
+                <button class="btn-remove-cart" onclick="removeFromCart(${item.id})" title="حذف">×</button>
+            </div>
+        `;
+    });
+
+    cartList.innerHTML = html;
+    document.getElementById('cartTotalAmount').innerHTML = total.toFixed(3) + ' <span>KWD</span>';
+}
+
+// حذف جهاز من السلة
+function removeFromCart(itemId) {
+    cart = cart.filter(item => item.id !== itemId);
+    renderCart();
+}
+
+// استخدام المجموع كمبلغ تمويل
+function useCartTotalAsLoan() {
+    let total = 0;
+    cart.forEach(item => total += item.price);
+    document.getElementById('productsLoanAmount').value = total.toFixed(3);
+
+    // تأثير بصري
+    const input = document.getElementById('productsLoanAmount');
+    input.style.background = 'rgba(243, 156, 18, 0.2)';
+    input.style.borderColor = '#f39c12';
+    setTimeout(() => {
+        input.style.background = '';
+        input.style.borderColor = '';
+    }, 1000);
+}
+</script>
+
+                
+                <!-- SCHEDULE MODE -->
+                <div id="scheduleModeSection" class="hidden">
+                    <div class="card-title">
+                        <div class="icon">📄</div>
+                        جدول أقساط العميل
+                    </div>
+
+                    <div class="quick-notice">
+                        <span class="icon">📁</span>
+                        حمل ملف XML من النظام وسيتم عرض جدول الأقساط بشكل واضح
+                    </div>
+
+                    <div class="schedule-upload-section" id="scheduleUploadSection">
+                        <input type="file" id="scheduleXmlFile" accept=".xml" onchange="handleScheduleFile(event)">
+                        <label for="scheduleXmlFile" class="schedule-upload-btn">📁 حمل ملف XML</label>
+                        <p>اسحب الملف هنا أو اضغط للاختيار</p>
+                    </div>
+                </div>
+<button class="btn btn-secondary" onclick="resetForm()">
+                    🔄 مسح البيانات
+                </button>
+            </div>
+
+            <!-- Results -->
+            <div class="results-section" id="resultsSection">
+                <!-- Summary Cards -->
+                <div class="summary-grid" id="summaryGrid">
+                    <div class="summary-card" id="maxInstallmentCard">
+                        <div class="summary-label">الحد الأقصى للأقساط</div>
+                        <div class="summary-value" id="maxInstallment">-</div>
+                        <div class="summary-sub" id="maxInstallmentSub">KWD</div>
+                    </div>
+                    <div class="summary-card warning" id="remainingCard">
+                        <div class="summary-label">المبلغ المتبقي للقسط الجديد</div>
+                        <div class="summary-value" id="remainingAmount">-</div>
+                        <div class="summary-sub" id="remainingSub">KWD</div>
+                    </div>
+                    <div class="summary-card" id="totalInstallmentsCard">
+                        <div class="summary-label"> إجمالي الأقساط قبل التمويل</div>
+                        <div class="summary-value" id="totalInstallments">-</div>
+                        <div class="summary-sub" id="totalInstallmentsSub">KWD</div>
+                    </div>
+                </div>
+
+                <!-- Eligibility Banner -->
+                <div class="eligibility-banner" id="eligibilityBanner">
+                    <span class="icon" id="eligibilityIcon">✅</span>
+                    <span id="eligibilityText">-</span>
+                </div>
+
+                <!-- Customer Info -->
+                <div class="customer-info" id="customerInfoSection">
+                    <div class="customer-info-title">
+                        👤 ملخص بيانات العميل
+                    </div>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">مبلغ التمويل</span>
+                            <span class="info-value" id="infoLoanAmount">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">الراتب الشهري</span>
+                            <span class="info-value" id="infoSalary">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">نوع العميل</span>
+                            <span class="info-value" id="infoClientType">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">نسبة الاستقطاع</span>
+                            <span class="info-value" id="infoPercentage">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">الأقساط الحالية</span>
+                            <span class="info-value" id="infoCurrent">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">الحد الأقصى للقسط الجديد</span>
+                            <span class="info-value" id="infoMaxNew">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Table -->
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>المدة (شهر)</th>
+                                <th>نسبة الفائدة</th>
+                                <th>قيمة الفائدة</th>
+                                <th>القسط الشهري</th>
+                                <th>أول قسط<br><small style="font-size:0.7rem;opacity:0.8">(+7 KWD)</small></th>
+                                <th>المبلغ الإجمالي</th>
+                                <th>الحالة</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultsTableBody">
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="print-section">
+                    <button class="btn-print" onclick="window.print()">
+                        🖨️ طباعة / حفظ PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+    
+            <!-- Schedule Results (Hidden initially) -->
+            <div class="results-section" id="scheduleResultsSection">
+                <div class="schedule-page" id="schedulePage">
+                    <div class="schedule-content">
+                        <!-- Page Title -->
+                        <div class="schedule-page-title">
+                            <h2>جدول الأقساط الشهري</h2>
+                            <div class="subtitle">Monthly Installment Schedule</div>
+                        </div>
+
+                        <!-- Summary Cards -->
+                        <div class="schedule-summary-grid">
+                            <div class="schedule-summary-card total">
+                                <h3>💰 إجمالي القرض</h3>
+                                <div class="value" id="scheduleTotalLoan">0.000</div>
+                                <div class="detail" id="scheduleInstallDetail">0 قسط</div>
+                            </div>
+                            <div class="schedule-summary-card paid">
+                                <h3>✅ المدفوع</h3>
+                                <div class="value" id="scheduleTotalPaid">0.000</div>
+                                <div class="detail" id="schedulePaidDetail">0 قسط</div>
+                            </div>
+                            <div class="schedule-summary-card unpaid">
+                                <h3>⏳ الباقي غير المدفوع</h3>
+                                <div class="value" id="scheduleTotalUnpaid">0.000</div>
+                                <div class="detail" id="scheduleUnpaidDetail">0 قسط</div>
+                            </div>
+                        </div>
+
+                        <!-- Info Bar -->
+                        <div class="schedule-info-bar">
+                            <div>عدد الأقساط<br><span id="scheduleNoOfInstall">0</span></div>
+                            <div>الأقساط المدفوعة<br><span id="scheduleNoOfPaid">0</span></div>
+                            <div>الأقساط غير المدفوعة<br><span id="scheduleNoOfUnpaid">0</span></div>
+                            <div>رسوم التأخير<br><span id="scheduleLateFees">0.000</span></div>
+                            <div>رسوم أخرى<br><span id="scheduleOtherCharges">0.000</span></div>
+                        </div>
+
+                        
+                        <!-- Compliance Analysis Section -->
+                        <div class="compliance-section" id="complianceSection">
+                            <div class="compliance-header">
+                                <span class="icon">📊</span>
+                                <div>
+                                    <h3>تحليل الالتزام بالسداد</h3>
+                                    <div class="sub">Payment Compliance Analysis</div>
+                                </div>
+                            </div>
+
+                            <!-- Score & Classification -->
+                            <div class="score-container">
+                                <div class="score-circle-wrapper">
+                                    <div class="score-circle" id="scoreCircle" style="--score-color: #10b981; --score-deg: 0deg;">
+                                        <span class="score-value" id="scoreValue">0%</span>
+                                    </div>
+                                    <span class="score-label">مؤشر الالتزام</span>
+                                </div>
+                                <div class="classification-badge" id="classificationBadge">
+                                    <div id="classificationText">-</div>
+                                    <div class="badge-sub" id="classificationSub">-</div>
+                                </div>
+                            </div>
+
+                            <!-- Recommendation -->
+                            <div class="recommendation-box" id="recommendationBox">
+                                <span class="rec-icon" id="recIcon">🤔</span>
+                                <div class="rec-text">
+                                    <div id="recTitle">-</div>
+                                    <div class="rec-reason" id="recReason">-</div>
+                                </div>
+                            </div>
+
+                            <!-- Delay Stats -->
+                            <div class="delay-stats-grid">
+                                <div class="delay-stat-card">
+                                    <div class="stat-icon">✅</div>
+                                    <div class="stat-value" id="statOnTime">0</div>
+                                    <div class="stat-label">في الوقت</div>
+                                </div>
+                                <div class="delay-stat-card">
+                                    <div class="stat-icon">⚠️</div>
+                                    <div class="stat-value" id="statSlight">0</div>
+                                    <div class="stat-label">تأخر 1-2 شهر</div>
+                                </div>
+                                <div class="delay-stat-card">
+                                    <div class="stat-icon">🚨</div>
+                                    <div class="stat-value" id="statModerate">0</div>
+                                    <div class="stat-label">تأخر 3-5 شهر</div>
+                                </div>
+                                <div class="delay-stat-card">
+                                    <div class="stat-icon">❌</div>
+                                    <div class="stat-value" id="statSevere">0</div>
+                                    <div class="stat-label">تأخر +6 شهر</div>
+                                </div>
+                            </div>
+
+                            <!-- Pattern Analysis -->
+                            <div class="pattern-box" id="patternBox">
+                                <h4>🔍 ملخص نمط السداد</h4>
+                                <div id="patternContent">
+                                    <!-- Filled by JS -->
+                                </div>
+                            </div>
+
+                            <!-- Delay Detail Table -->
+                            <div class="delay-table-container">
+                                <table class="delay-table">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>شهر الاستحقاق</th>
+                                            <th>شهر الدفع</th>
+                                            <th>التأخير</th>
+                                            <th>التصنيف</th>
+                                            <th>القسط</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="delayTableBody">
+                                        <!-- Filled by JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+<!-- Table -->
+                        <div class="schedule-table-container">
+                            <table class="schedule-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>تاريخ الاستحقاق</th>
+                                        <th>المبلغ الإجمالي</th>
+                                        <th>المبلغ المدفوع</th>
+                                        <th>المبلغ المتبقي</th>
+                                        <th>الحالة</th>
+                                        <th>تاريخ الدفع</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="scheduleTableBody">
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Footer -->
+                        <div class="schedule-footer">
+                            <p>هذا التقرير تم إنشاؤه إلكترونياً من نظام EasyBuy</p>
+                            <p>تاريخ التقرير: <span class="report-date" id="scheduleReportDate"></span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="print-section">
+                    <button class="btn-print" onclick="printScheduleOnly()">
+                        🖨️ طباعة / حفظ PDF
+                    </button>
+                </div>
+            </div>
+</div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">EASY<span>Buy</span></div>
+            <div class="footer-text">© 2026 - Developed by Ayoub Saniba</div>
+            <div class="footer-contact">
+                <span>📞 22203000</span>
+                <span>✉️ easybuy@easybuykw.com</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Interest rates configuration
+        const interestRates = {
+            4: 0.10,
+            6: 0.15,
+            12: 0.20,
+            18: 0.25,
+            24: 0.35
+        };
+
+        const clientTypes = {
+            government: { name: 'موظف حكومي', percentage: 0.48 },
+            private: { name: 'قطاع خاص', percentage: 0.40 },
+            retired: { name: 'متقاعد', percentage: 0.30 }
+        };
+
+        let selectedType = 'government';
+        let selectedTypeProducts = 'government';
+        let currentMode = 'full';
+        let productCount = 0;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            addProduct();
+            addProduct();
+            addProduct();
+        });
+
+        function switchMode(mode) {
+            currentMode = mode;
+
+            // Update buttons
+            document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('btnMode' + mode.charAt(0).toUpperCase() + mode.slice(1)).classList.add('active');
+
+            // Hide all sections
+            document.getElementById('fullModeSection').classList.add('hidden');
+            document.getElementById('quickModeSection').classList.add('hidden');
+            document.getElementById('productsModeSection').classList.add('hidden');
+            document.getElementById('scheduleModeSection').classList.add('hidden');
+
+            // Show selected section
+            document.getElementById(mode + 'ModeSection').classList.remove('hidden');
+
+            // Handle layout and visibility
+            const resultsSection = document.getElementById('resultsSection');
+            const scheduleResultsSection = document.getElementById('scheduleResultsSection');
+
+            if (mode === 'schedule') {
+                // Hide calculator results, show schedule if loaded
+                resultsSection.classList.remove('show');
+            } else {
+                // Hide schedule results, show calculator if available
+                scheduleResultsSection.classList.remove('show');
+                if (document.getElementById('resultsTableBody').innerHTML.trim() !== '') {
+                    resultsSection.classList.add('show');
+                }
+            }
+        }
+
+        function selectType(element, type) {
+            document.querySelectorAll('#fullModeSection .radio-option').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+            selectedType = type;
+        }
+
+        function selectTypeProducts(element, type) {
+            document.querySelectorAll('#productsModeSection .radio-option').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+            selectedTypeProducts = type;
+        }
+
+        function formatNumber(num) {
+            return num.toLocaleString('en-US', { minimumFractionDigits: 3, maximumFractionDigits: 3 });
+        }
+
+        // ========== PRODUCTS MODE ==========
+        function addProduct() {
+            productCount++;
+            const list = document.getElementById('productList');
+            const item = document.createElement('div');
+            item.className = 'product-item';
+            item.id = 'product-' + productCount;
+            item.innerHTML = `
+                <input type="text" placeholder="اسم المنتج ${productCount}" id="productName-${productCount}">
+                <div class="product-price-wrapper">
+                    <input type="number" class="product-price-input" placeholder="0" min="0" 
+                           id="productPrice-${productCount}" oninput="updateProductsTotal()">
+                    <span class="price-suffix">KWD</span>
+                </div>
+                <button class="btn-remove-product" onclick="removeProduct(${productCount})" title="حذف">×</button>
+            `;
+            list.appendChild(item);
+        }
+
+        function removeProduct(id) {
+            const item = document.getElementById('product-' + id);
+            if (item) {
+                item.remove();
+                updateProductsTotal();
+            }
+        }
+
+        function updateProductsTotal() {
+            let total = 0;
+            document.querySelectorAll('.product-price-input').forEach(input => {
+                const val = parseFloat(input.value);
+                if (!isNaN(val) && val > 0) {
+                    total += val;
+                }
+            });
+            document.getElementById('productsTotal').innerHTML = formatNumber(total) + ' <span>KWD</span>';
+            return total;
+        }
+
+        function useTotalAsLoan() {
+            const total = updateProductsTotal();
+            if (total > 0) {
+                document.getElementById('productsLoanAmount').value = total.toFixed(3);
+            } else {
+                alert('❌ الرجاء إضافة منتجات أولاً');
+            }
+        }
+
+        function calculateProducts() {
+            const loanAmount = parseFloat(document.getElementById('productsLoanAmount').value);
+            const salary = parseFloat(document.getElementById('productsSalary').value);
+            const currentInstallments = parseFloat(document.getElementById('productsCurrentInstallments').value) || 0;
+
+            if (!loanAmount || loanAmount <= 0) {
+                alert('❌ الرجاء إدخال مبلغ التمويل');
+                return;
+            }
+            if (!salary || salary <= 0) {
+                alert('❌ الرجاء إدخال الراتب الشهري');
+                return;
+            }
+
+            const clientInfo = clientTypes[selectedTypeProducts];
+            calculateAndDisplay(loanAmount, salary, currentInstallments, clientInfo);
+        }
+
+        // ========== FULL MODE ==========
+        function calculateFull() {
+            const loanAmount = parseFloat(document.getElementById('loanAmount').value);
+            const salary = parseFloat(document.getElementById('salary').value);
+            const currentInstallments = parseFloat(document.getElementById('currentInstallments').value) || 0;
+
+            if (!loanAmount || loanAmount <= 0) {
+                alert('❌ الرجاء إدخال مبلغ التمويل');
+                return;
+            }
+            if (!salary || salary <= 0) {
+                alert('❌ الرجاء إدخال الراتب الشهري');
+                return;
+            }
+
+            const clientInfo = clientTypes[selectedType];
+            calculateAndDisplay(loanAmount, salary, currentInstallments, clientInfo);
+        }
+
+        // ========== QUICK MODE ==========
+        function calculateQuick() {
+            const loanAmount = parseFloat(document.getElementById('quickLoanAmount').value);
+
+            if (!loanAmount || loanAmount <= 0) {
+                alert('❌ الرجاء إدخال مبلغ التمويل');
+                return;
+            }
+
+            // Hide eligibility-related sections for quick mode
+            document.getElementById('summaryGrid').style.display = 'none';
+            document.getElementById('eligibilityBanner').style.display = 'none';
+            document.getElementById('customerInfoSection').style.display = 'none';
+
+            // Show only the table
+            const tableBody = document.getElementById('resultsTableBody');
+            tableBody.innerHTML = '';
+
+            const durations = [4, 6, 12, 18, 24];
+
+            durations.forEach(months => {
+                const rate = interestRates[months];
+                const interestAmount = loanAmount * rate;
+                const totalAmount = loanAmount + interestAmount + 7;
+                const monthlyEMI = totalAmount / months;
+                const firstEMI = monthlyEMI + 7;
+
+                const row = document.createElement('tr');
+
+                row.innerHTML = `
+                    <td style="font-weight: 700; font-size: 1.05rem;">${months} شهر</td>
+                    <td><span class="rate-badge">${(rate * 100).toFixed(0)}%</span></td>
+                    <td>${formatNumber(interestAmount)} </td>
+                    <td class="emi-value">${formatNumber(monthlyEMI)} </td>
+                    <td class="first-emi-value">${formatNumber(firstEMI)} </td>
+                    <td class="total-value">${formatNumber(totalAmount)} </td>
+                    <td>
+                        <span class="status-badge approved">
+                            📊 حساب توضيحي
+                        </span>
+                    </td>
+                `;
+
+                tableBody.appendChild(row);
+            });
+
+            // Update print date
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('ar-KW', { year: 'numeric', month: 'long', day: 'numeric' });
+            document.getElementById('printDate').textContent = dateStr;
+            document.getElementById('scheduleReportDate').textContent = dateStr;
+
+            // Show results
+            document.getElementById('resultsSection').classList.add('show');
+            document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // ========== SHARED CALCULATION ==========
+        function calculateAndDisplay(loanAmount, salary, currentInstallments, clientInfo) {
+            const maxAllowed = salary * clientInfo.percentage;
+            const remainingForNew = Math.max(0, maxAllowed - currentInstallments);
+
+            // Show all sections
+            document.getElementById('summaryGrid').style.display = 'grid';
+            document.getElementById('eligibilityBanner').style.display = 'flex';
+            document.getElementById('customerInfoSection').style.display = 'block';
+
+            // Update summary cards
+            document.getElementById('maxInstallment').textContent = formatNumber(maxAllowed);
+            document.getElementById('remainingAmount').textContent = formatNumber(remainingForNew);
+            document.getElementById('totalInstallments').textContent = formatNumber(currentInstallments);
+
+            // Update customer info
+            document.getElementById('infoLoanAmount').textContent = formatNumber(loanAmount) ;
+            document.getElementById('infoSalary').textContent = formatNumber(salary) ;
+            document.getElementById('infoClientType').textContent = clientInfo.name;
+            document.getElementById('infoPercentage').textContent = (clientInfo.percentage * 100) + '%';
+            document.getElementById('infoCurrent').textContent = formatNumber(currentInstallments) ;
+            document.getElementById('infoMaxNew').textContent = formatNumber(remainingForNew) ;
+
+            // Calculate and populate table
+            const tableBody = document.getElementById('resultsTableBody');
+            tableBody.innerHTML = '';
+
+            let hasEligible = false;
+            const durations = [4, 6, 12, 18, 24];
+
+            durations.forEach(months => {
+                const rate = interestRates[months];
+                const interestAmount = loanAmount * rate;
+                const totalAmount = loanAmount + interestAmount + 7;
+                const monthlyEMI = totalAmount / months;
+                const firstEMI = monthlyEMI + 7;
+                const isEligible = monthlyEMI <= remainingForNew;
+
+                if (isEligible) hasEligible = true;
+
+                const row = document.createElement('tr');
+                row.className = isEligible ? 'eligible-row' : 'not-eligible-row';
+
+                row.innerHTML = `
+                    <td style="font-weight: 700; font-size: 1.05rem;">${months} شهر</td>
+                    <td><span class="rate-badge">${(rate * 100).toFixed(0)}%</span></td>
+                    <td>${formatNumber(interestAmount)} </td>
+                    <td class="emi-value">${formatNumber(monthlyEMI)} </td>
+                    <td class="first-emi-value">${formatNumber(firstEMI)} </td>
+                    <td class="total-value">${formatNumber(totalAmount)} </td>
+                    <td>
+                        <span class="status-badge ${isEligible ? 'approved' : 'rejected'}">
+                            ${isEligible ? '✅ مسموح' : '❌ غير مسموح'}
+                        </span>
+                    </td>
+                `;
+
+                tableBody.appendChild(row);
+            });
+
+            // Update eligibility banner
+            const banner = document.getElementById('eligibilityBanner');
+            const icon = document.getElementById('eligibilityIcon');
+            const text = document.getElementById('eligibilityText');
+
+            // Calculate current percentage (existing installments / salary)
+            const currentPercentage = (currentInstallments / salary) * 100;
+
+            if (hasEligible) {
+                banner.className = 'eligibility-banner eligible';
+                icon.textContent = '✅';
+                text.textContent = `العميل مؤهل! حالياً نسبة أقساطه هي ${currentPercentage.toFixed(0)}%، يمكنه الحصول على تمويل بقسط يصل إلى ${formatNumber(remainingForNew)} KWD شهرياً`;
+            } else {
+                banner.className = 'eligibility-banner not-eligible';
+                icon.textContent = '❌';
+                text.textContent = `العميل غير مؤهل. حالياً نسبة أقساطه هي ${currentPercentage.toFixed(0)}%، القسط المطلوب يتجاوز الحد المسموح به (${formatNumber(remainingForNew)} KWD)`;
+            }
+
+            // Update print date
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('ar-KW', { year: 'numeric', month: 'long', day: 'numeric' });
+            document.getElementById('printDate').textContent = dateStr;
+            document.getElementById('scheduleReportDate').textContent = dateStr;
+
+            // Show results
+            document.getElementById('resultsSection').classList.add('show');
+            document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function resetForm() {
+            document.getElementById('loanAmount').value = '';
+            document.getElementById('salary').value = '';
+            document.getElementById('currentInstallments').value = '';
+            document.getElementById('quickLoanAmount').value = '';
+            document.getElementById('productsLoanAmount').value = '';
+            document.getElementById('productsSalary').value = '';
+            document.getElementById('productsCurrentInstallments').value = '';
+            document.getElementById('resultsSection').classList.remove('show');
+            document.getElementById('scheduleResultsSection').classList.remove('show');
+            document.getElementById('scheduleTableBody').innerHTML = '';
+            if (document.getElementById('scheduleXmlFile')) {
+                document.getElementById('scheduleXmlFile').value = '';
+            }
+
+            // Reset products
+            document.getElementById('productList').innerHTML = '';
+            productCount = 0;
+            addProduct();
+            addProduct();
+            addProduct();
+            updateProductsTotal();
+
+            // Reset radio to government
+            document.querySelectorAll('.radio-option').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.radio-option').forEach((el, idx) => {
+                if (idx === 0) el.classList.add('active');
+            });
+            selectedType = 'government';
+            selectedTypeProducts = 'government';
+        }
+
+        // Allow Enter key to calculate
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                if (currentMode === 'full') calculateFull();
+                else if (currentMode === 'quick') calculateQuick();
+                else if (currentMode === 'products') calculateProducts();
+            }
+        });
+    
+        // ========== SCHEDULE MODE FUNCTIONS ==========
+        function handleScheduleFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(e.target.result, "text/xml");
+                parseScheduleXML(xmlDoc);
+            };
+            reader.readAsText(file);
+        }
+
+        function formatScheduleDate(dateStr) {
+            if (!dateStr || dateStr === '') return '-';
+            const year = dateStr.substring(0, 4);
+            const month = dateStr.substring(4, 6);
+            const day = dateStr.substring(6, 8);
+            return `${year}-${month}-${day}`;
+        }
+
+        function formatScheduleAmount(amount) {
+            const num = parseFloat(amount);
+            if (isNaN(num)) return '0.000';
+            return num.toLocaleString('en-US', { minimumFractionDigits: 3, maximumFractionDigits: 3 });
+        }
+
+        function parseScheduleXML(xmlDoc) {
+            const rows = xmlDoc.querySelectorAll('row');
+            const tableBody = document.getElementById('scheduleTableBody');
+            tableBody.innerHTML = '';
+
+            let totalLoan = 0;
+            let totalPaid = 0;
+            let totalUnpaid = 0;
+            let paidCount = 0;
+            let unpaidCount = 0;
+            let totalLateFees = 0;
+            let totalOtherCharges = 0;
+            let noOfInstall = 0;
+
+            // Get global info from first row if available
+            const firstRow = rows[0];
+            if (firstRow) {
+                const cols = firstRow.querySelectorAll('column');
+                noOfInstall = parseInt(cols[9]?.textContent || 0);
+                totalLateFees = parseFloat(cols[12]?.textContent || 0);
+                totalOtherCharges = parseFloat(cols[13]?.textContent || 0);
+            }
+
+            rows.forEach((row, index) => {
+                const cols = row.querySelectorAll('column');
+
+                const sNo = cols[0]?.textContent || '';
+                const dueDate = cols[1]?.textContent || '';
+                const totalPayment = cols[2]?.textContent || '0';
+                const amountPaid = cols[5]?.textContent || '0';
+                const payStatus = cols[6]?.textContent || 'N';
+                const paidDate = cols[7]?.textContent || '';
+                const dueAmt = cols[8]?.textContent || '0';
+
+                const totalPayNum = parseFloat(totalPayment) || 0;
+                const paidNum = parseFloat(amountPaid) || 0;
+                const dueNum = parseFloat(dueAmt) || 0;
+
+                totalLoan += totalPayNum;
+
+                if (payStatus === 'Y') {
+                    totalPaid += paidNum;
+                    paidCount++;
+                } else {
+                    totalUnpaid += dueNum;
+                    unpaidCount++;
+                }
+
+                const statusClass = payStatus === 'Y' ? 'status-badge paid' : 'status-badge unpaid';
+                const statusText = payStatus === 'Y' ? 'مدفوع' : 'غير مدفوع';
+                const dueColor = payStatus === 'N' ? 'var(--burgundy)' : 'var(--navy)';
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong style="color: var(--navy);">${sNo}</strong></td>
+                    <td class="schedule-date">${formatScheduleDate(dueDate)}</td>
+                    <td class="schedule-amount">${formatScheduleAmount(totalPayment)}</td>
+                    <td class="schedule-amount">${formatScheduleAmount(amountPaid)}</td>
+                    <td class="schedule-amount" style="color: ${dueColor};">${formatScheduleAmount(dueAmt)}</td>
+                    <td><span class="${statusClass}">${statusText}</span></td>
+                    <td class="schedule-date">${formatScheduleDate(paidDate)}</td>
+                `;
+                tableBody.appendChild(tr);
+            });
+
+            // Update Summary
+            document.getElementById('scheduleTotalLoan').textContent = formatScheduleAmount(totalLoan);
+            document.getElementById('scheduleTotalPaid').textContent = formatScheduleAmount(totalPaid);
+            document.getElementById('scheduleTotalUnpaid').textContent = formatScheduleAmount(totalUnpaid);
+            document.getElementById('scheduleInstallDetail').textContent = `${rows.length} قسط`;
+            document.getElementById('schedulePaidDetail').textContent = `${paidCount} قسط`;
+            document.getElementById('scheduleUnpaidDetail').textContent = `${unpaidCount} قسط`;
+
+            // Update Info Bar
+            document.getElementById('scheduleNoOfInstall').textContent = noOfInstall || rows.length;
+            document.getElementById('scheduleNoOfPaid').textContent = paidCount;
+            document.getElementById('scheduleNoOfUnpaid').textContent = unpaidCount;
+            document.getElementById('scheduleLateFees').textContent = formatScheduleAmount(totalLateFees);
+            document.getElementById('scheduleOtherCharges').textContent = formatScheduleAmount(totalOtherCharges);
+
+            // Report Date
+            const now = new Date();
+            document.getElementById('scheduleReportDate').textContent = now.toLocaleDateString('ar-KW', { year: 'numeric', month: 'long', day: 'numeric' });
+
+            // Show results
+            document.getElementById('scheduleResultsSection').classList.add('show');
+            document.getElementById('scheduleResultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            // Run compliance analysis
+            analyzeCompliance(rows);
+        }
+
+        function analyzeCompliance(rows) {
+            const delayData = [];
+            let onTimeCount = 0;
+            let slightDelayCount = 0;
+            let moderateDelayCount = 0;
+            let severeDelayCount = 0;
+            let futureCount = 0;
+            let totalDelayMonths = 0;
+            let maxConsecutiveDelays = 0;
+            let currentConsecutive = 0;
+            let paidCount = 0;
+
+            // Get current date for comparison
+            const now = new Date();
+            const currentYear = now.getFullYear();
+            const currentMonth = now.getMonth() + 1;
+
+            rows.forEach((row, index) => {
+                const cols = row.querySelectorAll('column');
+                const dueDate = cols[1]?.textContent || '';
+                const payStatus = cols[6]?.textContent || 'N';
+                const paidDate = cols[7]?.textContent || '';
+                const totalPayment = cols[2]?.textContent || '0';
+
+                let delayMonths = 0;
+                let delayCategory = 'on-time';
+                let delayText = '0';
+                let delayClass = 'on-time';
+                let isFuture = false;
+
+                // Check if due date is in the future (not yet due)
+                if (dueDate && dueDate.length >= 6) {
+                    const dueYear = parseInt(dueDate.substring(0, 4));
+                    const dueMonth = parseInt(dueDate.substring(4, 6));
+                    if (dueYear > currentYear || (dueYear === currentYear && dueMonth > currentMonth)) {
+                        isFuture = true;
+                    }
+                }
+
+                // Future installment - not yet due, don't count as delay
+                if (isFuture && payStatus === 'N') {
+                    delayCategory = 'future';
+                    delayText = 'غير مستحق';
+                    delayClass = 'on-time';
+                    futureCount++;
+                    currentConsecutive = 0;
+                } else if (payStatus === 'Y' && paidDate && dueDate) {
+                    const dueYear = parseInt(dueDate.substring(0, 4));
+                    const dueMonth = parseInt(dueDate.substring(4, 6));
+                    const paidYear = parseInt(paidDate.substring(0, 4));
+                    const paidMonth = parseInt(paidDate.substring(4, 6));
+
+                    delayMonths = (paidYear - dueYear) * 12 + (paidMonth - dueMonth);
+
+                    if (delayMonths <= 0) {
+                        delayMonths = 0;
+                        delayCategory = 'on-time';
+                        delayText = '0';
+                        delayClass = 'on-time';
+                        onTimeCount++;
+                        currentConsecutive = 0;
+                    } else if (delayMonths <= 2) {
+                        delayCategory = 'slight';
+                        delayText = delayMonths.toString();
+                        delayClass = 'slight';
+                        slightDelayCount++;
+                        totalDelayMonths += delayMonths;
+                        currentConsecutive++;
+                        if (currentConsecutive > maxConsecutiveDelays) maxConsecutiveDelays = currentConsecutive;
+                    } else if (delayMonths <= 5) {
+                        delayCategory = 'moderate';
+                        delayText = delayMonths.toString();
+                        delayClass = 'moderate';
+                        moderateDelayCount++;
+                        totalDelayMonths += delayMonths;
+                        currentConsecutive++;
+                        if (currentConsecutive > maxConsecutiveDelays) maxConsecutiveDelays = currentConsecutive;
+                    } else {
+                        delayCategory = 'severe';
+                        delayText = delayMonths.toString();
+                        delayClass = 'severe';
+                        severeDelayCount++;
+                        totalDelayMonths += delayMonths;
+                        currentConsecutive++;
+                        if (currentConsecutive > maxConsecutiveDelays) maxConsecutiveDelays = currentConsecutive;
+                    }
+                    paidCount++;
+                } else if (payStatus === 'N') {
+                    // Unpaid and past due (not future)
+                    delayCategory = 'severe';
+                    delayText = 'غير مدفوع';
+                    delayClass = 'severe';
+                    severeDelayCount++;
+                    currentConsecutive++;
+                    if (currentConsecutive > maxConsecutiveDelays) maxConsecutiveDelays = currentConsecutive;
+                }
+
+                delayData.push({
+                    sNo: cols[0]?.textContent || '',
+                    dueDate: dueDate,
+                    paidDate: paidDate,
+                    delayMonths: delayMonths,
+                    delayText: delayText,
+                    delayClass: delayClass,
+                    delayCategory: delayCategory,
+                    amount: totalPayment
+                });
+            });
+
+            // Calculate compliance score
+            const totalPaidInstallments = paidCount;
+            const weightedScore = totalPaidInstallments > 0 
+                ? ((onTimeCount * 1.0) + (slightDelayCount * 0.7) + (moderateDelayCount * 0.4) + (severeDelayCount * 0.0)) / totalPaidInstallments * 100
+                : 0;
+
+            const score = Math.round(weightedScore);
+
+            // Determine classification
+            let classification = '';
+            let classificationClass = '';
+            let classificationSub = '';
+            let recBoxClass = '';
+            let recIcon = '';
+            let recTitle = '';
+            let recReason = '';
+            let scoreColor = '';
+
+            if (score >= 90) {
+                classification = 'ملتزم ممتاز';
+                classificationClass = 'compliant';
+                classificationSub = 'سداد منتظم في الوقت';
+                recBoxClass = 'approve';
+                recIcon = '✅';
+                recTitle = 'مسموح - معاملة عادية';
+                recReason = 'العميل ملتزم بالسداد. يمكن الموافقة على التمويل الجديد بدون شروط إضافية.';
+                scoreColor = '#10b981';
+            } else if (score >= 70) {
+                classification = 'ملتزم';
+                classificationClass = 'compliant';
+                classificationSub = 'تأخر بسيط في بعض الأقساط';
+                recBoxClass = 'approve';
+                recIcon = '✅';
+                recTitle = 'مسموح - معاملة عادية';
+                recReason = 'التأخير بسيط (1-2 شهر) وغير متكرر. يمكن الموافقة على التمويل الجديد.';
+                scoreColor = '#10b981';
+            } else if (score >= 50) {
+                classification = 'متأخر متوسط';
+                classificationClass = 'moderate-delay';
+                classificationSub = 'تأخر متكرر 3-5 أشهر';
+                recBoxClass = 'advance-required';
+                recIcon = '⚠️';
+                recTitle = 'قسط مقدم مطلوب';
+                recReason = 'العميل متأخر بشكل متكرر. يُنصح بطلب قسط مقدم (2-3 أقساط) كضمان.';
+                scoreColor = '#e67e22';
+            } else if (score >= 30) {
+                classification = 'غير ملتزم';
+                classificationClass = 'non-compliant';
+                classificationSub = 'تأخيرات كبيرة متكررة';
+                recBoxClass = 'advance-required';
+                recIcon = '🚨';
+                recTitle = 'قسط مقدم كبير مطلوب أو رفض';
+                recReason = 'العميل غير ملتزم. يُنصح بطلب قسط مقدم كبير (4-6 أقساط) أو الرفض.';
+                scoreColor = '#ef4444';
+            } else {
+                classification = 'غير ملتزم تماماً';
+                classificationClass = 'non-compliant';
+                classificationSub = 'سجل سداد سيء جداً';
+                recBoxClass = 'reject';
+                recIcon = '❌';
+                recTitle = 'مرفوض';
+                recReason = 'سجل السداد سيء جداً. لا يُنصح بالموافقة على أي تمويل جديد.';
+                scoreColor = '#991b1b';
+            }
+
+            // Update Score Circle
+            const scoreCircle = document.getElementById('scoreCircle');
+            const scoreValue = document.getElementById('scoreValue');
+            const deg = (score / 100) * 360;
+            scoreCircle.style.setProperty('--score-color', scoreColor);
+            scoreCircle.style.setProperty('--score-deg', deg + 'deg');
+            scoreValue.textContent = score + '%';
+            scoreValue.style.color = scoreColor;
+
+            // Update Classification
+            const badge = document.getElementById('classificationBadge');
+            badge.className = 'classification-badge ' + classificationClass;
+            document.getElementById('classificationText').textContent = classification;
+            document.getElementById('classificationSub').textContent = classificationSub;
+
+            // Update Recommendation
+            const recBox = document.getElementById('recommendationBox');
+            recBox.className = 'recommendation-box ' + recBoxClass;
+            document.getElementById('recIcon').textContent = recIcon;
+            document.getElementById('recTitle').textContent = recTitle;
+            document.getElementById('recReason').textContent = recReason;
+
+            // Update Stats
+            document.getElementById('statOnTime').textContent = onTimeCount;
+            document.getElementById('statOnTime').style.color = '#059669';
+            document.getElementById('statSlight').textContent = slightDelayCount;
+            document.getElementById('statSlight').style.color = '#d68910';
+            document.getElementById('statModerate').textContent = moderateDelayCount;
+            document.getElementById('statModerate').style.color = '#e67e22';
+            document.getElementById('statSevere').textContent = severeDelayCount;
+            document.getElementById('statSevere').style.color = '#991b1b';
+
+            // Build Pattern Analysis
+            const patternContent = document.getElementById('patternContent');
+            let patternHTML = '';
+
+            patternHTML += `<div class="pattern-item">
+                <div class="pattern-dot ${score >= 70 ? 'green' : score >= 50 ? 'yellow' : score >= 30 ? 'orange' : 'red'}"></div>
+                <div class="pattern-text">مجموع التأخير: <strong>${totalDelayMonths} شهر</strong> عبر ${paidCount} قسط مدفوع</div>
+            </div>`;
+
+            patternHTML += `<div class="pattern-item">
+                <div class="pattern-dot ${maxConsecutiveDelays <= 1 ? 'green' : maxConsecutiveDelays <= 2 ? 'yellow' : maxConsecutiveDelays <= 3 ? 'orange' : 'red'}"></div>
+                <div class="pattern-text">أقصى تأخير متتالي: <strong>${maxConsecutiveDelays} قسط</strong></div>
+            </div>`;
+
+            const avgDelay = paidCount > 0 ? (totalDelayMonths / paidCount).toFixed(1) : '0';
+            patternHTML += `<div class="pattern-item">
+                <div class="pattern-dot ${avgDelay <= 0.5 ? 'green' : avgDelay <= 1.5 ? 'yellow' : avgDelay <= 3 ? 'orange' : 'red'}"></div>
+                <div class="pattern-text">متوسط التأخير: <strong>${avgDelay} شهر</strong> لكل قسط</div>
+            </div>`;
+
+            const unpaidCount = rows.length - paidCount - futureCount;
+            if (futureCount > 0) {
+                patternHTML += `<div class="pattern-item">
+                    <div class="pattern-dot green"></div>
+                    <div class="pattern-text">أقساط مستقبلية غير مستحقة: <strong>${futureCount} قسط</strong></div>
+                </div>`;
+            }
+            if (unpaidCount > 0) {
+                patternHTML += `<div class="pattern-item">
+                    <div class="pattern-dot red"></div>
+                    <div class="pattern-text">أقساط غير مدفوعة ومستحقة: <strong>${unpaidCount} قسط</strong> من ${rows.length}</div>
+                </div>`;
+            }
+
+            patternContent.innerHTML = patternHTML;
+
+            // Build Delay Detail Table
+            const delayTableBody = document.getElementById('delayTableBody');
+            delayTableBody.innerHTML = '';
+
+            delayData.forEach(item => {
+                const tr = document.createElement('tr');
+                const badgeClass = item.delayClass;
+                const badgeText = item.delayCategory === 'on-time' ? 'في الوقت' : 
+                                 item.delayCategory === 'slight' ? 'تأخر بسيط' :
+                                 item.delayCategory === 'moderate' ? 'تأخر متوسط' : 
+                                 item.delayCategory === 'future' ? 'غير مستحق' : 'تأخر كبير';
+
+                tr.innerHTML = `
+                    <td><strong>${item.sNo}</strong></td>
+                    <td class="schedule-date">${formatScheduleDate(item.dueDate)}</td>
+                    <td class="schedule-date">${formatScheduleDate(item.paidDate)}</td>
+                    <td class="delay-months ${item.delayClass}">${item.delayText}</td>
+                    <td><span class="delay-badge ${badgeClass}">${badgeText}</span></td>
+                    <td class="schedule-amount">${formatScheduleAmount(item.amount)}</td>
+                `;
+                delayTableBody.appendChild(tr);
+            });
+        }
+
+        // Drag and drop for schedule mode
+        document.addEventListener('DOMContentLoaded', function() {
+            const scheduleUploadSection = document.getElementById('scheduleUploadSection');
+            if (scheduleUploadSection) {
+                scheduleUploadSection.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    scheduleUploadSection.style.borderColor = 'var(--burgundy)';
+                    scheduleUploadSection.style.background = '#fef2f2';
+                });
+
+                scheduleUploadSection.addEventListener('dragleave', (e) => {
+                    e.preventDefault();
+                    scheduleUploadSection.style.borderColor = 'var(--border)';
+                    scheduleUploadSection.style.background = '#f8fafc';
+                });
+
+                scheduleUploadSection.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    scheduleUploadSection.style.borderColor = 'var(--border)';
+                    scheduleUploadSection.style.background = '#f8fafc';
+
+                    const files = e.dataTransfer.files;
+                    if (files.length > 0 && files[0].name.endsWith('.xml')) {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            const parser = new DOMParser();
+                            const xmlDoc = parser.parseFromString(event.target.result, "text/xml");
+                            parseScheduleXML(xmlDoc);
+                        };
+                        reader.readAsText(files[0]);
+                    } else {
+                        alert('❌ يرجى إرفاق ملف XML فقط');
+                    }
+                });
+            }
+        });
+
+        // ===== SIMPLE PRINT SCHEDULE ONLY =====
+        function printScheduleOnly() {
+            var tableBody = document.getElementById('scheduleTableBody');
+            if (!tableBody || tableBody.innerHTML.trim() === '') {
+                alert('❌ لا يوجد بيانات للطباعة. الرجاء تحميل ملف XML أولاً');
+                return;
+            }
+
+            // Add print-only class to body to hide everything except schedule table
+            document.body.classList.add('print-schedule-only');
+
+            // Print
+            window.print();
+
+            // Remove class after print dialog closes
+            setTimeout(function() {
+                document.body.classList.remove('print-schedule-only');
+            }, 1000);
+        }
+</script>
+</body>
+</html>
