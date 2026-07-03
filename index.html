@@ -2859,7 +2859,7 @@ function useCartTotalAsLoan() {
             durations.forEach(months => {
                 const rate = interestRates[months];
                 const interestAmount = loanAmount * rate;
-                const totalAmount = loanAmount + interestAmount + 7;
+                const totalAmount = loanAmount + interestAmount;
                 const monthlyEMI = totalAmount / months;
                 const firstEMI = monthlyEMI + 7;
 
@@ -2926,7 +2926,7 @@ function useCartTotalAsLoan() {
             durations.forEach(months => {
                 const rate = interestRates[months];
                 const interestAmount = loanAmount * rate;
-                const totalAmount = loanAmount + interestAmount + 7;
+                const totalAmount = loanAmount + interestAmount;
                 const monthlyEMI = totalAmount / months;
                 const firstEMI = monthlyEMI + 7;
                 const isEligible = monthlyEMI <= remainingForNew;
@@ -2958,17 +2958,16 @@ function useCartTotalAsLoan() {
             const icon = document.getElementById('eligibilityIcon');
             const text = document.getElementById('eligibilityText');
 
-            // Calculate current percentage (existing installments / salary)
             const currentPercentage = (currentInstallments / salary) * 100;
 
             if (hasEligible) {
                 banner.className = 'eligibility-banner eligible';
                 icon.textContent = '✅';
-                text.textContent = `العميل مؤهل! حالياً نسبة أقساطه هي ${currentPercentage.toFixed(0)}%، يمكنه الحصول على تمويل بقسط يصل إلى ${formatNumber(remainingForNew)} KWD شهرياً`;
+                text.textContent = `العميل مؤهل! حالياً نسبة أقساطه هي ${currentPercentage.toFixed(1)}%، يمكنه الحصول على تمويل بقسط يصل إلى ${formatNumber(remainingForNew)} KWD شهرياً`;
             } else {
                 banner.className = 'eligibility-banner not-eligible';
                 icon.textContent = '❌';
-                text.textContent = `العميل غير مؤهل. حالياً نسبة أقساطه هي ${currentPercentage.toFixed(0)}%، القسط المطلوب يتجاوز الحد المسموح به (${formatNumber(remainingForNew)} KWD)`;
+                text.textContent = `العميل غير مؤهل. حالياً نسبة أقساطه هي ${currentPercentage.toFixed(1)}%، القسط المطلوب يتجاوز الحد المسموح به (${formatNumber(remainingForNew)} KWD)`;
             }
 
             // Update print date
